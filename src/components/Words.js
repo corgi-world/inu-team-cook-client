@@ -2,6 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as d3 from "d3";
 
+import { AnimatePresence } from "framer-motion";
+import Detail from "./Detail";
+
 ////////////////////////////////////////////////////////////////////////////
 /////// class App is the parent component of Link and Node
 ////////////////////////////////////////////////////////////////////////////
@@ -13,16 +16,16 @@ class Words extends React.Component {
       addLinkArray: [],
       name: "",
       nodes: [
-        { name: "키워드00", id: 0 },
-        { name: "키워드01", id: 1 },
-        { name: "키워드02", id: 2 },
-        { name: "키워드03", id: 3 },
-        { name: "키워드04", id: 4 },
-        { name: "키워드05", id: 5 },
-        { name: "키워드06", id: 6 },
-        { name: "키워드07", id: 7 },
-        { name: "키워드08", id: 8 },
-        { name: "키워드09", id: 9 },
+        { name: "키워드21", id: 21 },
+        { name: "키워드22", id: 22 },
+        { name: "키워드23", id: 23 },
+        { name: "키워드24", id: 24 },
+        { name: "키워드25", id: 25 },
+        { name: "키워드26", id: 26 },
+        { name: "키워드27", id: 27 },
+        { name: "키워드27", id: 28 },
+        { name: "키워드29", id: 29 },
+        { name: "키워드30", id: 30 },
         { name: "키워드10", id: 10 },
         { name: "키워드11", id: 11 },
         { name: "키워드12", id: 12 },
@@ -34,22 +37,23 @@ class Words extends React.Component {
         { name: "키워드18", id: 18 },
         { name: "키워드19", id: 19 },
         { name: "키워드20", id: 20 },
-        { name: "키워드21", id: 21 },
-        { name: "키워드22", id: 22 },
-        { name: "키워드23", id: 23 },
-        { name: "키워드24", id: 24 },
-        { name: "키워드25", id: 25 },
-        { name: "키워드26", id: 26 },
-        { name: "키워드27", id: 27 },
-        { name: "키워드27", id: 28 },
-        { name: "키워드29", id: 29 },
-        { name: "키워드30", id: 30 },
+        { name: "키워드00", id: 0 },
+        { name: "키워드01", id: 1 },
+        { name: "키워드02", id: 2 },
+        { name: "키워드03", id: 3 },
+        { name: "키워드04", id: 4 },
+        { name: "키워드05", id: 5 },
+        { name: "키워드06", id: 6 },
+        { name: "키워드07", id: 7 },
+        { name: "키워드08", id: 8 },
+        { name: "키워드09", id: 9 },
       ],
       links: [
         // { source: 0, target: 1, id: 0 },
         // { source: 0, target: 2, id: 1 },
         // { source: 0, target: 3, id: 2 },
       ],
+      isShowing: false,
     };
     this.handleAddNode = this.handleAddNode.bind(this);
     this.addNode = this.addNode.bind(this);
@@ -86,19 +90,38 @@ class Words extends React.Component {
     }));
   }
 
+  onNodeClicked = (node) => {
+    console.log(node.id, node.name);
+    this.setState((prevState) => ({ ...prevState, isShowing: !prevState.isShowing }));
+  };
+
   render() {
     var links = this.state.links.map((link) => {
       return <Link key={link.id} data={link} />;
     });
     var nodes = this.state.nodes.map((node) => {
-      return <Node data={node} name={node.name} key={node.id} />;
+      return (
+        <Node
+          data={node}
+          name={node.name}
+          key={node.id}
+          onNodeClicked={this.onNodeClicked}
+        />
+      );
     });
     return (
       <div>
-        <svg className="graph" width={FORCE.width} height={FORCE.height}>
+        <svg
+          className="graph"
+          width={FORCE.width}
+          height={FORCE.height}
+          style={{ overflow: "visible" }}
+        >
           <g>{links}</g>
           <g>{nodes}</g>
         </svg>
+
+        <AnimatePresence>{this.state.isShowing ? <Detail /> : null}</AnimatePresence>
       </div>
     );
   }
@@ -154,15 +177,10 @@ class Node extends React.Component {
   }
 
   render() {
+    const { id, name } = this.props.data;
     return (
       <g className="node" ref={this.gRef}>
-        <text
-          onClick={() => {
-            console.log(this.props.data);
-          }}
-        >
-          {this.props.data.name}
-        </text>
+        <text onClick={() => this.props.onNodeClicked({ id, name })}>{name}</text>
       </g>
     );
   }
@@ -173,8 +191,8 @@ class Node extends React.Component {
 ///////////////////////////////////////////////////////////
 
 var FORCE = (function (nsp) {
-  var width = window.innerWidth - 30,
-    height = window.innerHeight - 30,
+  var width = window.innerWidth - 200,
+    height = window.innerHeight - 120,
     color = d3.scaleOrdinal(d3.schemeCategory10),
     initForce = (nodes, links) => {
       nsp.force = d3
