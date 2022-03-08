@@ -23,7 +23,7 @@ class Words extends React.Component {
         { name: "키워드25", id: 25 },
         { name: "키워드26", id: 26 },
         { name: "키워드27", id: 27 },
-        { name: "키워드27", id: 28 },
+        { name: "키워드28", id: 28 },
         { name: "키워드29", id: 29 },
         { name: "키워드30", id: 30 },
         { name: "키워드10", id: 10 },
@@ -53,6 +53,7 @@ class Words extends React.Component {
         // { source: 0, target: 2, id: 1 },
         // { source: 0, target: 3, id: 2 },
       ],
+      selectedNode: null,
       isShowing: false,
     };
     this.handleAddNode = this.handleAddNode.bind(this);
@@ -91,8 +92,19 @@ class Words extends React.Component {
   }
 
   onNodeClicked = (node) => {
-    console.log(node.id, node.name);
-    this.setState((prevState) => ({ ...prevState, isShowing: !prevState.isShowing }));
+    const { id, name } = node;
+    this.setState((prevState) => ({
+      ...prevState,
+      selectedNode: { id, name },
+      isShowing: !prevState.isShowing,
+    }));
+  };
+  onDetailClicked = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      selectedNode: null,
+      isShowing: !prevState.isShowing,
+    }));
   };
 
   render() {
@@ -121,7 +133,14 @@ class Words extends React.Component {
           <g>{nodes}</g>
         </svg>
 
-        <AnimatePresence>{this.state.isShowing ? <Detail /> : null}</AnimatePresence>
+        <AnimatePresence>
+          {this.state.isShowing ? (
+            <Detail
+              selectedNode={this.state.selectedNode}
+              onDetailClicked={this.onDetailClicked}
+            />
+          ) : null}
+        </AnimatePresence>
       </div>
     );
   }
