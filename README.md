@@ -1,5 +1,1 @@
----
-permalink: /index.html
----
-
-# Hello~
+https://corgi-world.github.io/inu-team-cook-client/
