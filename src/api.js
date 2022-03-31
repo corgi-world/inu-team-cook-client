@@ -1,7 +1,7 @@
-// "proxy": "http://13.209.73.95:8000/"
+// "proxy": "http://13.209.73.95:8000"
 
 export function fetchWords() {
-  return fetch("http://13.209.73.95:8000/topic", {
+  return fetch("/topic", {
     headers: {
       accepts: "application/json",
     },
