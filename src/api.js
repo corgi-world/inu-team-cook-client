@@ -1,13 +1,7 @@
-// export function fetchWords() {
-//   return fetch("/topic/", {
-//     headers: {
-//       Accept: "application/json",
-//     },
-//   }).then((response) => response.json());
-// }
+// "proxy": "http://13.209.73.95:8000/"
 
 export function fetchWords() {
-  return fetch("/topic", {
+  return fetch("http://13.209.73.95:8000/topic", {
     headers: {
       accepts: "application/json",
     },
