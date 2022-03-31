@@ -58,7 +58,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    font-family: 'Gowun Dodum', sans-serif;
+    font-family: 'Noto Serif KR', sans-serif;
   }
   a {
     text-decoration: none;
@@ -69,11 +69,11 @@ const GlobalStyle = createGlobalStyle`
 const queryClient = new QueryClient();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <GlobalStyle />
-      <App />
-    </QueryClientProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <GlobalStyle />
+    <App />
+  </QueryClientProvider>,
+  // </React.StrictMode>
   document.getElementById("root")
 );

@@ -29,8 +29,14 @@ class Words extends React.Component {
   }
 
   componentDidMount() {
+    const keys = Object.keys(this.props.keywords);
+    const keywords = keys.map((key) => {
+      return { id: parseInt(key), name: this.props.keywords[key] };
+    });
+    keywords.reverse();
+
     this.setState((prevState) => {
-      return { ...prevState, nodes: this.props.keywords };
+      return { ...prevState, nodes: keywords };
     });
 
     const { nodes, links } = this.state;
@@ -157,13 +163,17 @@ class Node extends React.Component {
   }
   componentDidMount() {
     const { id } = this.props.data;
-    const fs = 20 + 2 * id;
-    const fw = 25 <= id ? "600" : "400";
+    const fs = Math.floor(15 + 2.5 * id);
+    const fw = (id) => {
+      const arr = ["200", "300", "400", "500", "600", "700", "900"];
+      const v = Math.floor(id / 5);
+      return arr[v];
+    };
     this.d3Node = d3
       .select(this.gRef.current)
       .datum(this.props.data)
       .call(FORCE.enterNode)
-      .style("font-weight", fw)
+      .style("font-weight", fw(id))
       .style("font-size", `${fs}px`);
   }
 
@@ -210,7 +220,7 @@ var FORCE = (function (nsp) {
         .style("text-transform", "uppercase")
         .style("text-anchor", "middle")
         .style("alignment-baseline", "middle")
-        .style("font-family", "Gowun Dodum")
+        .style("font-family", "Noto Serif KR")
         .style("cursor", "pointer");
     },
     updateNode = (selection) => {
