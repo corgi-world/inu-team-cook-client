@@ -1,1 +1,1 @@
-https://corgi-world.github.io/inu-team-cook-client/
+http://54.180.114.46/
