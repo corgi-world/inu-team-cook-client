@@ -61,8 +61,8 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Noto Serif KR', sans-serif;
   }
   a {
-    text-decoration: none;
-    color: inherit;
+    /* text-decoration: none;
+    color: inherit; */
   }
 `;
 
