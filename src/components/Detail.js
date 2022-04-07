@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import Donut from "./chart/Donut";
 import Bar from "./chart/Bar";
+import RelatedList from "./RelatedList";
 
 const vars = {
   initial: {
@@ -36,7 +37,7 @@ const Overlay = styled(motion.div)`
 
 const Box = styled(motion.div)`
   width: 1000px;
-  height: 700px;
+  height: 720px;
   background-color: white;
   border-radius: 15px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
@@ -45,7 +46,7 @@ const Box = styled(motion.div)`
   justify-content: center;
   align-items: center;
 
-  padding: 20px;
+  padding: 30px;
 `;
 
 const Contents = styled.div`
@@ -53,11 +54,11 @@ const Contents = styled.div`
   height: 100%;
 `;
 
-const ChartWrapper = styled.div`
+const ContentWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 25px;
+  margin-top: 20px;
 `;
 
 const Title = styled.h1`
@@ -72,6 +73,9 @@ const Link = styled.a`
 
 export default function Detail(props) {
   const { id, name } = props.selectedNode;
+  const link =
+    "https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=105&oid=629&aid=0000141721";
+  const linkString = link.length >= 100 ? `${link.substring(0, 97)}...` : link;
   return (
     <Overlay
       onClick={props.onDetailClicked}
@@ -91,16 +95,23 @@ export default function Detail(props) {
       >
         <Contents>
           <Title>{name}</Title>
-          <Link
-            href="https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=105&oid=629&aid=0000141721"
-            target="_blank"
-          >
-            https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=105&oid=629&aid=0000141721
+          <Link href={link} target="_blank">
+            {linkString}
           </Link>
-          <ChartWrapper>
+          <ContentWrapper>
             <Donut />
             <Bar />
-          </ChartWrapper>
+          </ContentWrapper>
+          <ContentWrapper>
+            <RelatedList
+              title={"연관 주제"}
+              words={["주제1", "주제2", "주제3", "주제4", "주제5"]}
+            />
+            <RelatedList
+              title={"연관 키워드"}
+              words={["키워드1", "키워드2", "키워드3", "키워드4", "키워드5"]}
+            />
+          </ContentWrapper>
         </Contents>
       </Box>
     </Overlay>
