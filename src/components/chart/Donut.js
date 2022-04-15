@@ -5,8 +5,8 @@ const Wrapper = styled.div`
   width: 350px;
 `;
 
-export default function Donut(props) {
-  const series = [62, 38];
+export default function Donut({ data }) {
+  const series = data;
   const options = {
     chart: {},
     dataLabels: { enabled: false },

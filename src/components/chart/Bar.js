@@ -5,8 +5,8 @@ const Wrapper = styled.div`
   width: 400px;
 `;
 
-export default function Bar(props) {
-  const series = [{ name: "", data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6] }];
+export default function Bar({ data }) {
+  const series = [{ name: "", data }];
   const options = {
     dataLabels: { enabled: false },
     xaxis: {

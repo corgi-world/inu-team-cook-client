@@ -29,14 +29,8 @@ class Words extends React.Component {
   }
 
   componentDidMount() {
-    const keys = Object.keys(this.props.keywords);
-    const keywords = keys.map((key) => {
-      return { id: parseInt(key), name: this.props.keywords[key] };
-    });
-    keywords.reverse();
-
     this.setState((prevState) => {
-      return { ...prevState, nodes: keywords };
+      return { ...prevState, nodes: this.props.keywords };
     });
 
     const { nodes, links } = this.state;

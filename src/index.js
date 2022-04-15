@@ -5,6 +5,8 @@ import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { createGlobalStyle } from "styled-components";
 
+import { RecoilRoot } from "recoil";
+
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
   html, body, div, span, applet, object, iframe,
@@ -70,10 +72,12 @@ const queryClient = new QueryClient();
 
 ReactDOM.render(
   // <React.StrictMode>
-  <QueryClientProvider client={queryClient}>
-    <GlobalStyle />
-    <App />
-  </QueryClientProvider>,
+  <RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <GlobalStyle />
+      <App />
+    </QueryClientProvider>
+  </RecoilRoot>,
   // </React.StrictMode>
   document.getElementById("root")
 );

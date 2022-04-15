@@ -4,6 +4,9 @@ import Donut from "./chart/Donut";
 import Bar from "./chart/Bar";
 import RelatedList from "./RelatedList";
 
+import { ageSelector, genderSelector } from "../data/atom";
+import { useRecoilValue } from "recoil";
+
 const vars = {
   initial: {
     scale: 0,
@@ -76,6 +79,10 @@ export default function Detail(props) {
   const link =
     "https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=105&oid=629&aid=0000141721";
   const linkString = link.length >= 100 ? `${link.substring(0, 97)}...` : link;
+
+  const donutData = useRecoilValue(genderSelector(name));
+  const barData = useRecoilValue(ageSelector(name));
+
   return (
     <Overlay
       onClick={props.onDetailClicked}
@@ -99,8 +106,8 @@ export default function Detail(props) {
             {linkString}
           </Link>
           <ContentWrapper>
-            <Donut />
-            <Bar />
+            <Donut data={donutData} />
+            <Bar data={barData} />
           </ContentWrapper>
           <ContentWrapper>
             <RelatedList
