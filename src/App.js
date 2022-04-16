@@ -40,6 +40,7 @@ function App() {
   const setTopicAtom = useSetRecoilState(topicAtom);
   const { isLoading, data } = useQuery("topic", fetchWords, {
     onSuccess: (topic) => {
+      console.log(topic);
       setTopicAtom(topic);
     },
     onError: () => {

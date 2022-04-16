@@ -4,7 +4,13 @@ import Donut from "./chart/Donut";
 import Bar from "./chart/Bar";
 import RelatedList from "./RelatedList";
 
-import { ageSelector, genderSelector } from "../data/atom";
+import {
+  linkSelector,
+  ageSelector,
+  genderSelector,
+  relatedSubjectSelector,
+  relatedKeywordSelector,
+} from "../data/atom";
 import { useRecoilValue } from "recoil";
 
 const vars = {
@@ -57,10 +63,15 @@ const Contents = styled.div`
   height: 100%;
 `;
 
-const ContentWrapper = styled.div`
+const ChartWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: 20px;
+`;
+const ListWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
   margin-top: 20px;
 `;
 
@@ -76,12 +87,13 @@ const Link = styled.a`
 
 export default function Detail(props) {
   const { id, name } = props.selectedNode;
-  const link =
-    "https://news.naver.com/main/read.naver?mode=LSD&mid=shm&sid1=105&oid=629&aid=0000141721";
-  const linkString = link.length >= 100 ? `${link.substring(0, 97)}...` : link;
+  const link = useRecoilValue(linkSelector(name));
+  const linkString = link.length >= 80 ? `${link.substring(0, 77)}...` : link;
 
   const donutData = useRecoilValue(genderSelector(name));
   const barData = useRecoilValue(ageSelector(name));
+  const relatedSubjects = useRecoilValue(relatedSubjectSelector(name));
+  const relatedKeywords = useRecoilValue(relatedKeywordSelector(name));
 
   return (
     <Overlay
@@ -105,20 +117,14 @@ export default function Detail(props) {
           <Link href={link} target="_blank">
             {linkString}
           </Link>
-          <ContentWrapper>
+          <ChartWrapper>
             <Donut data={donutData} />
             <Bar data={barData} />
-          </ContentWrapper>
-          <ContentWrapper>
-            <RelatedList
-              title={"연관 주제"}
-              words={["주제1", "주제2", "주제3", "주제4", "주제5"]}
-            />
-            <RelatedList
-              title={"연관 키워드"}
-              words={["키워드1", "키워드2", "키워드3", "키워드4", "키워드5"]}
-            />
-          </ContentWrapper>
+          </ChartWrapper>
+          <ListWrapper>
+            <RelatedList title={"연관 주제"} words={relatedSubjects} />
+            <RelatedList title={"연관 키워드"} words={relatedKeywords} />
+          </ListWrapper>
         </Contents>
       </Box>
     </Overlay>

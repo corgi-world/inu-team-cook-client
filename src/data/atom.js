@@ -31,8 +31,47 @@ export const ageSelector = selectorFamily({
 });
 export const linkSelector = selectorFamily({
   key: "linkSelector",
-  get: ({ get }) => {
-    const topic = get(topicAtom);
-    return "";
-  },
+  get:
+    (targetKeyword) =>
+    ({ get }) => {
+      const topic = get(topicAtom);
+      const { rankurl } = topic.filter(({ keyword }) => targetKeyword === keyword)[0];
+      return rankurl;
+    },
 });
+export const relatedSubjectSelector = selectorFamily({
+  key: "relatedSubjectSelector",
+  get:
+    (targetKeyword) =>
+    ({ get }) => {
+      const topic = get(topicAtom);
+      const targetTopic = topic.filter(({ keyword }) => targetKeyword === keyword)[0];
+
+      return getRelatedValues("subject", { ...targetTopic });
+    },
+});
+export const relatedKeywordSelector = selectorFamily({
+  key: "relatedKeywordSelector",
+  get:
+    (targetKeyword) =>
+    ({ get }) => {
+      const topic = get(topicAtom);
+      const targetTopic = topic.filter(({ keyword }) => targetKeyword === keyword)[0];
+
+      return getRelatedValues("search", { ...targetTopic });
+    },
+});
+
+const getRelatedValues = (type, targetTopic) => {
+  const result = [];
+  for (const key in targetTopic) {
+    if (key.includes(type)) {
+      const related = targetTopic[key];
+      if (related !== "0") {
+        result.push(related);
+      }
+    }
+  }
+
+  return result;
+};
