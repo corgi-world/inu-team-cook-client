@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Donut from "./chart/Donut";
 import Bar from "./chart/Bar";
 import RelatedList from "./RelatedList";
+import LinkWords from "./LinkWords";
 
 import {
   linkSelector,
@@ -40,7 +41,7 @@ const Overlay = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.5);
 
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 `;
 
@@ -56,6 +57,12 @@ const Box = styled(motion.div)`
   align-items: center;
 
   padding: 30px;
+`;
+const ContentsBox = styled(Box)`
+  width: 1000px;
+`;
+const GraphBox = styled(Box)`
+  width: 500px;
 `;
 
 const Contents = styled.div`
@@ -103,7 +110,7 @@ export default function Detail(props) {
       animate="animate"
       exit="exit"
     >
-      <Box
+      <ContentsBox
         onClick={(event) => {
           event.stopPropagation();
         }}
@@ -126,7 +133,26 @@ export default function Detail(props) {
             <RelatedList title={"연관 키워드"} words={relatedKeywords} />
           </ListWrapper>
         </Contents>
-      </Box>
+      </ContentsBox>
+      <GraphBox
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
+        <LinkWords
+          nodes={[
+            { id: 0, name },
+            { id: 1, name: "가나다라마바사" },
+            { id: 2, name: "가나" },
+          ]}
+          links={[
+            { source: 0, target: 1, id: 0 },
+            { source: 0, target: 2, id: 1 },
+          ]}
+        />
+      </GraphBox>
     </Overlay>
   );
 }
+
+// { source: 0, target: 1, id: 0 },

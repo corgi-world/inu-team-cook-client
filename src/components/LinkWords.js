@@ -9,7 +9,7 @@ import Detail from "./Detail";
 /////// class App is the parent component of Link and Node
 ////////////////////////////////////////////////////////////////////////////
 
-class Words extends React.Component {
+class LinkWords extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -159,19 +159,28 @@ class Node extends React.Component {
     this.gRef = React.createRef();
   }
   componentDidMount() {
-    const { id } = this.props.data;
-    const fs = Math.floor(15 + 2.5 * id);
-    const fw = (id) => {
-      const arr = ["200", "300", "400", "500", "600", "700", "900"];
-      const v = Math.floor(id / 5);
-      return arr[v];
-    };
+    const { id, name } = this.props.data;
+    const fs = id === 0 ? 50 : 30;
+    const fw = id === 0 ? "600" : "200";
     this.d3Node = d3
       .select(this.gRef.current)
       .datum(this.props.data)
       .call(FORCE.enterNode)
-      .style("font-weight", fw(id))
+      .style("font-weight", fw)
       .style("font-size", `${fs}px`);
+
+    const widthFactor = id === 0 ? 50 : 30;
+    const xFactor = widthFactor / 2;
+    const height = id === 0 ? 60 : 40;
+    const y = id === 0 ? 35 : 22;
+
+    d3.select(this.gRef.current)
+      .select("rect")
+      .attr("width", name.length * widthFactor)
+      .attr("height", height)
+      .attr("x", -name.length * xFactor)
+      .attr("y", -y)
+      .style("fill", "white");
   }
 
   componentDidUpdate() {
@@ -182,6 +191,7 @@ class Node extends React.Component {
     const { id, name } = this.props.data;
     return (
       <g className="node" ref={this.gRef}>
+        <rect />
         <text onClick={() => this.props.onNodeClicked({ id, name })}>{name}</text>
       </g>
     );
@@ -193,14 +203,14 @@ class Node extends React.Component {
 ///////////////////////////////////////////////////////////
 
 var FORCE = (function (nsp) {
-  var width = window.innerWidth - 200,
-    height = window.innerHeight - 120,
+  var width = 500,
+    height = 720,
     color = d3.scaleOrdinal(d3.schemeCategory10),
     initForce = (nodes, links) => {
       nsp.force = d3
         .forceSimulation(nodes)
         .force("charge", d3.forceManyBody().strength(-200))
-        .force("link", d3.forceLink(links).distance(100))
+        .force("link", d3.forceLink(links).distance(150))
         .force(
           "center",
           d3
@@ -212,8 +222,16 @@ var FORCE = (function (nsp) {
     },
     enterNode = (selection) => {
       selection
+        .select("rect")
+        .attr("width", 2)
+        .attr("height", 2)
+        .attr("x", -1)
+        .attr("y", -1)
+        .style("fill", "white");
+
+      selection
         .select("text")
-        .style("fill", "black")
+        .style("background-color", "black")
         .style("text-transform", "uppercase")
         .style("text-anchor", "middle")
         .style("alignment-baseline", "middle")
@@ -288,4 +306,4 @@ var FORCE = (function (nsp) {
   return nsp;
 })(FORCE || {});
 
-export default Words;
+export default LinkWords;

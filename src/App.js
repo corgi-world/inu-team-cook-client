@@ -58,9 +58,10 @@ function App() {
           <Loader>불러오는 중</Loader>
         ) : (
           <Words
-            keywords={data.map(({ keyword }, index) => {
+            nodes={data.map(({ keyword }, index) => {
               return { name: keyword, id: 30 - index };
             })}
+            links={[]}
           />
         )}
       </Wrapper>
