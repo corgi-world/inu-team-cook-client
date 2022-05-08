@@ -61,6 +61,16 @@ export const relatedKeywordSelector = selectorFamily({
       return getRelatedValues("search", { ...targetTopic });
     },
 });
+export const summarySelector = selectorFamily({
+  key: "summarySelector",
+  get:
+    (targetKeyword) =>
+    ({ get }) => {
+      const topic = get(topicAtom);
+      const { summary } = topic.filter(({ keyword }) => targetKeyword === keyword)[0];
+      return summary;
+    },
+});
 
 const getRelatedValues = (type, targetTopic) => {
   const result = [];

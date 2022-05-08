@@ -11,8 +11,11 @@ import {
   genderSelector,
   relatedSubjectSelector,
   relatedKeywordSelector,
+  summarySelector,
 } from "../data/atom";
 import { useRecoilValue } from "recoil";
+
+import { cutString } from "../utils/util";
 
 const vars = {
   initial: {
@@ -75,6 +78,15 @@ const ChartWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   margin-top: 20px;
+  margin-bottom: 20px;
+`;
+const SummaryWrapper = styled.div`
+  margin-top: 35px;
+`;
+const SummaryBox = styled.div`
+  font-size: 22px;
+  line-height: 33px;
+  word-spacing: 8px;
 `;
 const ListWrapper = styled.div`
   display: flex;
@@ -89,18 +101,21 @@ const Title = styled.h1`
 `;
 
 const Link = styled.a`
-  font-size: 16px;
+  font-size: 20px;
+  color: black;
 `;
 
 export default function Detail(props) {
   const { id, name } = props.selectedNode;
   const link = useRecoilValue(linkSelector(name));
-  const linkString = link.length >= 80 ? `${link.substring(0, 77)}...` : link;
+  const linkString = cutString({ str: link, maxLength: 70 });
 
   const donutData = useRecoilValue(genderSelector(name));
   const barData = useRecoilValue(ageSelector(name));
   const relatedSubjects = useRecoilValue(relatedSubjectSelector(name));
   const relatedKeywords = useRecoilValue(relatedKeywordSelector(name));
+  const summary = useRecoilValue(summarySelector(name));
+  const summaryString = cutString({ str: summary, maxLength: 330 });
 
   const nodes = relatedKeywords.map((keyword, index) => {
     return { id: index + 1, name: keyword };
@@ -128,9 +143,6 @@ export default function Detail(props) {
       >
         <Contents>
           <Title>{name}</Title>
-          <Link href={link} target="_blank">
-            {linkString}
-          </Link>
           <ChartWrapper>
             <Donut data={donutData} />
             <Bar data={barData} />
@@ -139,6 +151,12 @@ export default function Detail(props) {
             <RelatedList title={"연관 주제"} words={relatedSubjects} />
             <RelatedList title={"연관 키워드"} words={relatedKeywords} />
           </ListWrapper> */}
+          <Link href={link} target="_blank">
+            {linkString}
+          </Link>
+          <SummaryWrapper>
+            <SummaryBox>{summaryString}</SummaryBox>
+          </SummaryWrapper>
         </Contents>
       </ContentsBox>
       <GraphBox
