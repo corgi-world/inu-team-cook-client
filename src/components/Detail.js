@@ -62,7 +62,7 @@ const ContentsBox = styled(Box)`
   width: 1000px;
 `;
 const GraphBox = styled(Box)`
-  width: 500px;
+  width: 550px;
 `;
 
 const Contents = styled.div`
@@ -102,6 +102,13 @@ export default function Detail(props) {
   const relatedSubjects = useRecoilValue(relatedSubjectSelector(name));
   const relatedKeywords = useRecoilValue(relatedKeywordSelector(name));
 
+  const nodes = relatedKeywords.map((keyword, index) => {
+    return { id: index + 1, name: keyword };
+  });
+  const links = relatedKeywords.map((keyword, index) => {
+    return { source: 0, target: index + 1, id: index };
+  });
+
   return (
     <Overlay
       onClick={props.onDetailClicked}
@@ -128,10 +135,10 @@ export default function Detail(props) {
             <Donut data={donutData} />
             <Bar data={barData} />
           </ChartWrapper>
-          <ListWrapper>
+          {/* <ListWrapper>
             <RelatedList title={"연관 주제"} words={relatedSubjects} />
             <RelatedList title={"연관 키워드"} words={relatedKeywords} />
-          </ListWrapper>
+          </ListWrapper> */}
         </Contents>
       </ContentsBox>
       <GraphBox
@@ -139,17 +146,7 @@ export default function Detail(props) {
           event.stopPropagation();
         }}
       >
-        <LinkWords
-          nodes={[
-            { id: 0, name },
-            { id: 1, name: "가나다라마바사" },
-            { id: 2, name: "가나" },
-          ]}
-          links={[
-            { source: 0, target: 1, id: 0 },
-            { source: 0, target: 2, id: 1 },
-          ]}
-        />
+        <LinkWords nodes={[{ id: 0, name }, ...nodes]} links={links} />
       </GraphBox>
     </Overlay>
   );

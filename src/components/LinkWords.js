@@ -62,7 +62,6 @@ class LinkWords extends React.Component {
   }
 
   onNodeClicked = (node) => {
-    console.log(FORCE);
     const { id, name } = node;
     this.setState((prevState) => ({
       ...prevState,
@@ -112,10 +111,7 @@ class LinkWords extends React.Component {
 
         <AnimatePresence>
           {this.state.isShowing ? (
-            <Detail
-              selectedNode={this.state.selectedNode}
-              onDetailClicked={this.onDetailClicked}
-            />
+            <Detail selectedNode={this.state.selectedNode} />
           ) : null}
         </AnimatePresence>
       </div>
@@ -160,7 +156,7 @@ class Node extends React.Component {
   }
   componentDidMount() {
     const { id, name } = this.props.data;
-    const fs = id === 0 ? 50 : 30;
+    const fs = id === 0 ? 45 : 25;
     const fw = id === 0 ? "600" : "200";
     this.d3Node = d3
       .select(this.gRef.current)
@@ -169,10 +165,11 @@ class Node extends React.Component {
       .style("font-weight", fw)
       .style("font-size", `${fs}px`);
 
-    const widthFactor = id === 0 ? 50 : 30;
+    const widthFactor = id === 0 ? 45 : 25;
     const xFactor = widthFactor / 2;
     const height = id === 0 ? 60 : 40;
-    const y = id === 0 ? 35 : 22;
+    const y = id === 0 ? 48 : 30;
+    const backgroundColor = id === 0 ? "white" : "transparent";
 
     d3.select(this.gRef.current)
       .select("rect")
@@ -180,7 +177,7 @@ class Node extends React.Component {
       .attr("height", height)
       .attr("x", -name.length * xFactor)
       .attr("y", -y)
-      .style("fill", "white");
+      .style("fill", backgroundColor);
   }
 
   componentDidUpdate() {
@@ -192,7 +189,11 @@ class Node extends React.Component {
     return (
       <g className="node" ref={this.gRef}>
         <rect />
-        <text onClick={() => this.props.onNodeClicked({ id, name })}>{name}</text>
+        <text>
+          <a href={`https://www.google.com/search?q=${name}`} target="_blank">
+            {name}
+          </a>
+        </text>
       </g>
     );
   }
@@ -203,14 +204,14 @@ class Node extends React.Component {
 ///////////////////////////////////////////////////////////
 
 var FORCE = (function (nsp) {
-  var width = 500,
+  var width = 550,
     height = 720,
     color = d3.scaleOrdinal(d3.schemeCategory10),
     initForce = (nodes, links) => {
       nsp.force = d3
         .forceSimulation(nodes)
         .force("charge", d3.forceManyBody().strength(-200))
-        .force("link", d3.forceLink(links).distance(150))
+        .force("link", d3.forceLink(links).distance(180))
         .force(
           "center",
           d3
