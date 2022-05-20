@@ -21,6 +21,6 @@
 - http://54.180.114.46/
 
 <div style="display:flex; flex-direction: row;">
-  <img src="./img/main.png" width="50%" />
-  <img src="./img/detail.png" width="50%" />
+  <img src="./img/main.png" width="40%" />
+  <img src="./img/detail.png" width="40%" />
 </div>
